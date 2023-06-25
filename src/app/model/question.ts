@@ -1,17 +1,10 @@
-export interface Question {
+import {Answer} from "./answer";
+
+export class Question {
   id: number;
   content: string;
-  answers:[
-    id:number,
-    content:string
-  ][];
-  rightAnswer: number;
-  exam: [
-    id: number,
-    content: string
-  ];
-  tags: [
-    id:number,
-    content:string
-  ][];
+  examDate: Date;
+  difficulty: string;
+  categories: string[]
+  answers: Answer[];
 }

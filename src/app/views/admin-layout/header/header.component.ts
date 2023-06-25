@@ -11,8 +11,8 @@ export class HeaderComponent {
 
   ngOnInit(){
     this.items = [
-      { label: 'lista pytań', icon: 'pi pi-list', routerLink: 'questionList'},
-      { label: 'dodaj pytanie', icon: 'pi pi-plus', routerLink: 'addQuestion'},
+      { label: 'lista pytań', icon: 'pi pi-list', routerLink: 'questions'},
+      { label: 'dodaj pytanie', icon: 'pi pi-plus', routerLink: 'add-question'},
       { label: 'statystyki requestów', icon: 'pi pi-chart-line', routerLink: 'metric'},
       { label: 'nauka', icon: 'pi pi-file-edit', routerLink: 'quiz'},
     ];

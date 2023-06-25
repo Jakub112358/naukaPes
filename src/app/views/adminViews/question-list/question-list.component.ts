@@ -15,5 +15,9 @@ export class QuestionListComponent {
   ) {
   }
 
-
+  ngOnInit(){
+    this.questionService.findAll().subscribe(data => {
+      this.questions = data;
+    })
+  }
 }

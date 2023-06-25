@@ -1,1 +1,26 @@
-
+<div class="surface-section md:w-12">
+  <div class="font-medium text-3xl text-900 my-3" >Pytania</div>
+  <p-table styleClass="p-datatable-sm" [value]="questions" [tableStyle]="{'min-width': '30rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id" style="width:5%">Id <p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="examDate" style="width:10%">Data egzaminu  <p-sortIcon field="examDate"></p-sortIcon></th>
+        <th pSortableColumn="difficulty" style="width:10%">Trudność <p-sortIcon field="difficulty"></p-sortIcon></th>
+        <th pSortableColumn="categories" style="width:10%">Kategorie <p-sortIcon field="categories"></p-sortIcon></th>
+        <th pSortableColumn="content" style="width:60%">Treść <p-sortIcon field="content"></p-sortIcon></th>
+        <th style="width: 10%">Akcje</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-question>
+      <tr>
+        <td>{{question.id}}</td>
+        <td>{{question.examDate}}</td>
+        <td>{{question.difficulty}}</td>
+        <td>{{question.categories}}</td>
+        <td>{{question.content}}</td>
+        <td><button pButton pRipple label="Szczegóły" icon="pi pi-search" class="p-button-text" routerLink="{{'/admin/questions/' + question.id}}"></button></td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <button pButton pRipple label="dodaj pytanie" class="p-button-success m-2" icon="pi pi-plus" routerLink='/admin/add-question'></button>
+</div>
