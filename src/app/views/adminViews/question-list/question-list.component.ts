@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {Question} from "../../../model/question";
+import {QuestionService} from "../../../service/question.service";
 
 @Component({
   selector: 'app-question-list',
@@ -6,5 +8,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./question-list.component.scss']
 })
 export class QuestionListComponent {
+  questions: Question[];
+
+  constructor(
+    private questionService: QuestionService
+  ) {
+  }
+
 
 }

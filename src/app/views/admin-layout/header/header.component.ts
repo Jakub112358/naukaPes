@@ -13,6 +13,7 @@ export class HeaderComponent {
     this.items = [
       { label: 'lista pytań', icon: 'pi pi-list', routerLink: 'questionList'},
       { label: 'dodaj pytanie', icon: 'pi pi-plus', routerLink: 'addQuestion'},
+      { label: 'statystyki requestów', icon: 'pi pi-chart-line', routerLink: 'metric'},
       { label: 'nauka', icon: 'pi pi-file-edit', routerLink: 'quiz'},
     ];
   }

@@ -5,10 +5,6 @@ import { HeaderComponent } from './header/header.component';
 import {MenuModule} from "primeng/menu";
 import {PanelMenuModule} from "primeng/panelmenu";
 import {MenubarModule} from "primeng/menubar";
-
-
-
-
 @NgModule({
   declarations: [
     AdminLayoutComponent,
