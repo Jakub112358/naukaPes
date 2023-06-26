@@ -5,6 +5,6 @@ export class Question {
   content: string;
   examDate: Date;
   difficulty: string;
-  categories: string[]
+  categories: string[];
   answers: Answer[];
 }

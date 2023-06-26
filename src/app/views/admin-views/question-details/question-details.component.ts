@@ -6,6 +6,7 @@ import {QuestionUpdate} from "../../../model/request/question-update";
 import {Difficulties} from "../../../model/enumerated/difficulties";
 import {Categories} from "../../../model/enumerated/categories";
 import {Answer} from "../../../model/response/answer";
+import {AnswerCreate} from "../../../model/request/answer-create";
 
 @Component({
   selector: 'app-question-details',
@@ -18,6 +19,7 @@ export class QuestionDetailsComponent {
   editDateModalVisible: boolean;
   editDifficultyModalVisible: boolean;
   editCategoriesModalVisible: boolean;
+  editAnswerModalVisible: boolean;
   deleteQuestionModalVisible: boolean;
   deleteAnswerModalVisible: boolean;
   addAnswerModalVisible: boolean;
@@ -26,6 +28,8 @@ export class QuestionDetailsComponent {
   difficulties: string[];
   categories: string[];
   answerToDelete: Answer;
+  answerCorrectOptions: any[];
+  answerCreateDto: AnswerCreate;
 
 
 
@@ -38,6 +42,10 @@ export class QuestionDetailsComponent {
     this.loadQuestion();
     this.difficulties = Object.values(Difficulties);
     this.categories = Object.values(Categories);
+    this.answerCorrectOptions=[
+      {label: 'poprawna', value: true},
+      {label: 'błędna', value: false}
+    ]
   }
 
   private loadQuestion() {
@@ -62,6 +70,7 @@ export class QuestionDetailsComponent {
   }
 
   showAddAnswerModal() {
+    this.answerCreateDto = new AnswerCreate('',false);
     this.addAnswerModalVisible = true;
   }
 
@@ -85,36 +94,71 @@ export class QuestionDetailsComponent {
     this.editCategoriesModalVisible = true;
   }
 
+  showEditAnswerModal(answer: Answer) {
+    this.fieldToUpdate = Object.assign({}, answer);
+    this.editAnswerModalVisible = true;
+  }
+
   onSubmitEditContent() {
     let updateRequest = new QuestionUpdate(this.fieldToUpdate, this.question.examDate, this.question.difficulty, this.question.categories);
-    this.sendUpdateRequest(updateRequest);
+    this.sendUpdateQuestionRequest(updateRequest);
     this.editContentModalVisible = false;
   }
 
   onSubmitEditDate() {
     let updatedDate = this.dateToString(this.fieldToUpdate);
     let updateRequest = new QuestionUpdate(this.question.content, updatedDate, this.question.difficulty, this.question.categories);
-    this.sendUpdateRequest(updateRequest);
+    this.sendUpdateQuestionRequest(updateRequest);
     this.editDateModalVisible = false;
   }
 
   onSubmitEditDifficulty() {
     let updateRequest = new QuestionUpdate(this.question.content, this.question.examDate, this.fieldToUpdate, this.question.categories);
-    this.sendUpdateRequest(updateRequest);
+    this.sendUpdateQuestionRequest(updateRequest);
     this.editDifficultyModalVisible = false;
   }
 
   onSubmitEditCategories() {
     let updateRequest = new QuestionUpdate(this.question.content, this.question.examDate, this.question.difficulty, this.fieldToUpdate);
-    this.sendUpdateRequest(updateRequest);
+    this.sendUpdateQuestionRequest(updateRequest);
     this.editCategoriesModalVisible = false;
+  }
+
+  onSubmitEditAnswer() {
+    let questionId = this.getId()
+    let updateRequest = new AnswerCreate(this.fieldToUpdate.content, this.fieldToUpdate.correct)
+
+    this.questionService.replaceAnswer(questionId, this.fieldToUpdate.id, updateRequest).subscribe(
+      data => {
+        if (data) {
+          this.loadQuestion()
+        } else {
+          this.failModalVisible = true;
+        }
+      }
+    );
+    this.editAnswerModalVisible = false;
+  }
+
+  onSubmitAddAnswer() {
+    let questionId = this.getId();
+
+    this.questionService.addAnswer(questionId, this.answerCreateDto).subscribe(
+      data => {
+        if (data) {
+          this.loadQuestion()
+        } else {
+          this.failModalVisible = true;
+        }
+      }
+    );
   }
 
   categoryToDisplayString(cat: string){
     return cat.toLowerCase().replace('_',' ');
   }
 
-  private sendUpdateRequest(updateRequest: QuestionUpdate) {
+  private sendUpdateQuestionRequest(updateRequest: QuestionUpdate) {
     let id = this.getId()
     this.questionService.update(id, updateRequest).subscribe(
       data => {
@@ -138,9 +182,7 @@ export class QuestionDetailsComponent {
     );
   }
 
-  showEditAnswerModal() {
 
-  }
 
   deleteAnswer() {
     this.questionService.deleteAnswer(this.getId(), this.answerToDelete.id).subscribe(() =>
@@ -148,4 +190,7 @@ export class QuestionDetailsComponent {
     );
     this.deleteAnswerModalVisible = false
   }
+
+
+
 }

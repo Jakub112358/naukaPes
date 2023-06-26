@@ -11,6 +11,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {CalendarModule} from "primeng/calendar";
 import {CheckboxModule} from "primeng/checkbox";
 import {RadioButtonModule} from "primeng/radiobutton";
+import {SelectButtonModule} from "primeng/selectbutton";
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import {RadioButtonModule} from "primeng/radiobutton";
     CalendarModule,
     CheckboxModule,
     RadioButtonModule,
+    SelectButtonModule,
   ]
 })
 export class QuestionDetailsModule {

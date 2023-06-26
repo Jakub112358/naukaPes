@@ -67,7 +67,7 @@
         <td>{{answer.content}}</td>
         <td>
           <button pButton pRipple label="usuń" class="p-button-text" icon="pi pi-trash" (click)="showDeleteAnswerModal(answer)"></button>
-          <button pButton pRipple label="zmień" icon="pi pi-pencil" class="p-button-text" (click)="showEditAnswerModal()"></button>
+          <button pButton pRipple label="zmień" icon="pi pi-pencil" class="p-button-text" (click)="showEditAnswerModal(answer)"></button>
         </td>
       </tr>
     </ng-template>
@@ -152,6 +152,32 @@
     <button type="button" pButton pRipple label="Wróć" icon="pi pi-arrow-left" class="p-button-success w-5 m-2"
             (click)="deleteAnswerModalVisible=false"></button>
   </div>
+</p-dialog>
+
+
+<!--edit answer modal-->
+
+<p-dialog *ngIf="editAnswerModalVisible" header="zmień odpowiedź" [(visible)]="editAnswerModalVisible" [style]="{width: '50vw'}" [modal]="true" [closable]="false">
+  <form (ngSubmit)="onSubmitEditAnswer()" class="grid justify-content-center py-2">
+    <input class="w-9" type="text" pInputText [(ngModel)]="fieldToUpdate.content" name="content"/>
+    <p-selectButton class="w-3" [options]="answerCorrectOptions" [(ngModel)]="fieldToUpdate.correct" optionLabel="label" optionValue="value" name="correct"></p-selectButton>
+    <button type="submit" pButton pRipple label="Zapisz zmiany" class="p-button-success w-5 m-2"></button>
+    <button type="button" pButton pRipple label="Wróć" class="p-button-danger w-5 m-2"
+            (click)="editAnswerModalVisible=false"></button>
+  </form>
+</p-dialog>
+
+
+<!--add answer modal-->
+
+<p-dialog *ngIf="addAnswerModalVisible" header="dodaj odpowiedź" [(visible)]="addAnswerModalVisible" [style]="{width: '50vw'}" [modal]="true" [closable]="false">
+  <form (ngSubmit)="onSubmitAddAnswer()" class="grid justify-content-center py-2">
+    <input class="w-9" type="text" pInputText [(ngModel)]="answerCreateDto.content" name="content"/>
+    <p-selectButton class="w-3" [options]="answerCorrectOptions" [(ngModel)]="answerCreateDto.correct" optionLabel="label" optionValue="value" name="correct"></p-selectButton>
+    <button type="submit" pButton pRipple label="Zapisz zmiany" class="p-button-success w-5 m-2"></button>
+    <button type="button" pButton pRipple label="Wróć" class="p-button-danger w-5 m-2"
+            (click)="addAnswerModalVisible=false"></button>
+  </form>
 </p-dialog>
 
 <!--error question modal-->
