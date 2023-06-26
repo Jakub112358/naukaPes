@@ -92,7 +92,7 @@
       </li>
     </ul>
 
-    <button pButton pRipple label="Wyszukaj" class="p-button-success w-5 m-2" [routerLink]="'/'+selectedId"></button>
+    <button pButton pRipple label="Wyszukaj" class="p-button-success w-5 m-2" [routerLink]="'/admin/questions/' + selectedId"></button>
     <button type="button" pButton pRipple label="Anuluj" class="p-button-danger w-5 m-2"
             (click)="idSearchModalVisible = false"></button>
   </div>
