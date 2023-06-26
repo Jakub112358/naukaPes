@@ -20,12 +20,17 @@ export class QuestionService {
       )
   }
 
-
-
-  findByCriteria(criteria: QuestionSearchCriteria) {
+  findByCriteria(criteria: QuestionSearchCriteria): Observable<Question[]> {
     return this.http.post<Question[]>(ApiConstraints.CRITERIA_URL, criteria)
       .pipe(
         catchError(this.handleError<Question[]>())
+      )
+  }
+
+  public findById(id: number): Observable<Question> {
+    return this.http.get<Question>(ApiConstraints.QUESTION_URL + '/' + id)
+      .pipe(
+        catchError(this.handleError<Question>())
       )
   }
 
