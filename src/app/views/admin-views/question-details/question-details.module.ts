@@ -5,6 +5,12 @@ import {RouterModule} from "@angular/router";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {TableModule} from "primeng/table";
+import {DialogModule} from "primeng/dialog";
+import {FormsModule} from "@angular/forms";
+import {InputTextModule} from "primeng/inputtext";
+import {CalendarModule} from "primeng/calendar";
+import {CheckboxModule} from "primeng/checkbox";
+import {RadioButtonModule} from "primeng/radiobutton";
 
 
 @NgModule({
@@ -22,6 +28,12 @@ import {TableModule} from "primeng/table";
     ButtonModule,
     RippleModule,
     TableModule,
+    DialogModule,
+    FormsModule,
+    InputTextModule,
+    CalendarModule,
+    CheckboxModule,
+    RadioButtonModule,
   ]
 })
 export class QuestionDetailsModule {

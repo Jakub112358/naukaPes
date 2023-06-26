@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {Question} from "../../../model/question";
+import {Question} from "../../../model/response/question";
 import {QuestionService} from "../../../service/question.service";
-import {QuestionSearchCriteria} from "../../../model/question-search-criteria";
+import {QuestionSearchCriteria} from "../../../model/request/question-search-criteria";
 import {Difficulties} from "../../../model/enumerated/difficulties";
 import {Categories} from "../../../model/enumerated/categories";
 
