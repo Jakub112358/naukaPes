@@ -7,6 +7,7 @@ import {QuestionSearchCriteria} from "../model/request/question-search-criteria"
 import {QuestionUpdate} from "../model/request/question-update";
 import {AnswerCreate} from "../model/request/answer-create";
 import {Answer} from "../model/response/answer";
+import {QuestionCreate} from "../model/request/question-create";
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +77,13 @@ export class QuestionService {
     return this.http.post<Answer>((ApiConstraints.QUESTION_URL + '/' + questionId + '/answers'), createRequest)
       .pipe(
         catchError(this.handleError<Answer>())
+      )
+  }
+
+  save(createRequest: QuestionCreate) {
+    return this.http.post<Question>((ApiConstraints.QUESTION_URL), createRequest)
+      .pipe(
+        catchError(this.handleError<Question>())
       )
   }
 }
