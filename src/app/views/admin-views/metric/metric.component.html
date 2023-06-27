@@ -1,0 +1,22 @@
+<!--metric table-->
+
+<div class="surface-section md:w-12">
+  <div class="font-medium text-3xl text-900 my-3" >Statystyki Requestów</div>
+  <p-table *ngIf="metrics" styleClass="p-datatable-sm" [value]="metrics" [tableStyle]="{'min-width': '30rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="request" style="width:50%">Request <p-sortIcon field="request"></p-sortIcon></th>
+        <th pSortableColumn="code" style="width:10%">Kod  <p-sortIcon field="code"></p-sortIcon></th>
+        <th pSortableColumn="count" style="width:10%">Ilość <p-sortIcon field="count"></p-sortIcon></th>
+
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-metric>
+      <tr>
+        <td>{{metric.request}}</td>
+        <td>{{metric.code}}</td>
+        <td>{{metric.count}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

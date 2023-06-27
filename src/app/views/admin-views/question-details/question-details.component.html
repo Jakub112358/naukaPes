@@ -1,0 +1,187 @@
+<!--question information-->
+
+
+<div *ngIf="question" class="surface-section md:w-8">
+  <div class="font-medium text-3xl text-900 my-3" >Szczegóły pytania</div>
+  <ul class="list-none p-0 m-0">
+
+    <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">id </div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{question.id}}</div>
+    </li>
+
+    <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">treść </div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{question.content}}</div>
+      <div class="w-6 md:w-2 flex justify-content-end">
+        <button pButton pRipple label="zmień" icon="pi pi-pencil" class="p-button-text"
+                (click)="showEditContentModal()"></button>
+      </div>
+    </li>
+
+    <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">data egzaminu </div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{question.examDate}}</div>
+      <div class="w-6 md:w-2 flex justify-content-end">
+        <button pButton pRipple label="zmień" icon="pi pi-pencil" class="p-button-text"
+                (click)="showEditDateModal()"></button>
+      </div>
+    </li>
+
+    <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">poziom trudności </div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{question.difficulty.toLowerCase()}}</div>
+      <div class="w-6 md:w-2 flex justify-content-end">
+        <button pButton pRipple label="zmień" icon="pi pi-pencil" class="p-button-text"
+                (click)="showEditDifficultyModal()"></button>
+      </div>
+    </li>
+
+    <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">kategorie </div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{question.categories.toString().toLowerCase().replace(',', ', ').replace('_', ' ')}}</div>
+      <div class="w-6 md:w-2 flex justify-content-end">
+        <button pButton pRipple label="zmień" icon="pi pi-pencil" class="p-button-text"
+                (click)="showEditCategoriesModal()"></button>
+      </div>
+    </li>
+  </ul>
+
+  <button pButton pRipple label="usuń pytanie" class="p-button-danger m-2" icon="pi pi-trash" (click)="showDeleteQuestionModal()"></button>
+
+  <div class="font-medium text-3xl text-900 my-3" >Odpowiedzi </div>
+
+  <p-table *ngIf="question.answers" styleClass="p-datatable-sm" [value]="question.answers" [tableStyle]="{'min-width': '30rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:5%">Id</th>
+        <th style="width:10%">Poprawna</th>
+        <th style="width:65%">Treść</th>
+        <th style="width:20%">Akcje</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-answer>
+      <tr>
+        <td>{{answer.id}}</td>
+        <td>{{answer.correct}}</td>
+        <td>{{answer.content}}</td>
+        <td>
+          <button pButton pRipple label="usuń" class="p-button-text" icon="pi pi-trash" (click)="showDeleteAnswerModal(answer)"></button>
+          <button pButton pRipple label="zmień" icon="pi pi-pencil" class="p-button-text" (click)="showEditAnswerModal(answer)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <button pButton pRipple label="dodaj odpowiedź" class="p-button-success m-2" icon="pi pi-plus" (click)="showAddAnswerModal()"></button>
+
+</div>
+
+<!--edit content modal-->
+
+<p-dialog *ngIf="editContentModalVisible" header="modyfikuj treść pytania" [(visible)]="editContentModalVisible" [style]="{width: '50vw'}" [modal]="true" [closable]="false">
+  <form (ngSubmit)="onSubmitEditContent()" class="grid justify-content-center py-2">
+    <input class="w-12" type="text" pInputText [(ngModel)]="fieldToUpdate" [ngModelOptions]="{standalone: true}"/>
+    <button type="submit" pButton pRipple label="Zapisz zmiany" class="p-button-success w-5 m-2"></button>
+    <button type="button" pButton pRipple label="Wróć" class="p-button-danger w-5 m-2"
+            (click)="editContentModalVisible=false"></button>
+  </form>
+</p-dialog>
+
+
+<!--edit date modal-->
+
+<p-dialog *ngIf="editDateModalVisible" header="modyfikuj datę pytania" [(visible)]="editDateModalVisible" [style]="{width: '50vw'}" [modal]="true" [closable]="false">
+  <form (ngSubmit)="onSubmitEditDate()" class="grid justify-content-center py-2">
+    <p-calendar class="w-12" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [(ngModel)]=fieldToUpdate
+                [showIcon]="true" appendTo="body" [placeholder]="fieldToUpdate" [ngModelOptions]="{standalone: true}"></p-calendar>
+    <button type="submit" pButton pRipple label="Zapisz zmiany" class="p-button-success w-5 m-2"></button>
+    <button type="button" pButton pRipple label="Wróć" class="p-button-danger w-5 m-2"
+            (click)="editDateModalVisible=false"></button>
+  </form>
+</p-dialog>
+
+
+<!--edit difficulty modal-->
+
+
+<p-dialog *ngIf="editDifficultyModalVisible" header="modyfikuj poziom trudności" [(visible)]="editDifficultyModalVisible" [style]="{width: '50vw'}" [modal]="true" [closable]="false">
+  <form (ngSubmit)="onSubmitEditDifficulty()" class="grid justify-content-center py-2">
+    <div class="flex flex-wrap gap-3 w-12 justify-content-center">
+      <div *ngFor="let dif of difficulties" class="flex align-items-center">
+        <p-radioButton  name="difficulty" value="{{dif}}" [(ngModel)]="fieldToUpdate" inputId="{{dif}}"></p-radioButton>
+        <label for="{{dif}}" class="ml-2 text-xl">{{dif.toLowerCase()}}</label>
+      </div>
+    </div>
+    <button type="submit" pButton pRipple label="Zapisz zmiany" class="p-button-success w-5 m-2"></button>
+    <button type="button" pButton pRipple label="Wróć" class="p-button-danger w-5 m-2"
+            (click)="editDifficultyModalVisible=false"></button>
+  </form>
+</p-dialog>
+
+
+<!--edit categories modal-->
+
+
+<p-dialog *ngIf="editCategoriesModalVisible" header="modyfikuj kategorie" [(visible)]="editCategoriesModalVisible" [style]="{width: '50vw'}" [modal]="true" [closable]="false">
+  <form (ngSubmit)="onSubmitEditCategories()" class="grid justify-content-center py-2">
+    <p-checkbox *ngFor="let cat of categories" class="m-1" name="categories" value="{{cat}}" label="{{categoryToDisplayString(cat)}}" [(ngModel)]="fieldToUpdate"></p-checkbox>
+    <button type="submit" pButton pRipple label="Zapisz zmiany" class="p-button-success w-5 m-2"></button>
+    <button type="button" pButton pRipple label="Wróć" class="p-button-danger w-5 m-2"
+            (click)="editCategoriesModalVisible=false"></button>
+  </form>
+</p-dialog>
+
+<!--delete question modal-->
+
+<p-dialog header="usuń pytanie" [(visible)]="deleteQuestionModalVisible" [style]="{width: '50vw'}" [modal]="true">
+  <div class="grid justify-content-center py-2">
+    <h3 class="w-12">Na pewno chcesz usunąć pytanie? Ta akcja jest nieodwracalna.</h3>
+    <button type="button" pButton pRipple label="Usuń" icon="pi pi-trash" class="p-button-danger w-5 m-2" (click)="deleteQuestion()"></button>
+    <button type="button" pButton pRipple label="Wróć" icon="pi pi-arrow-left" class="p-button-success w-5 m-2"
+            (click)="deleteQuestionModalVisible=false"></button>
+  </div>
+</p-dialog>
+
+<!--delete answer modal-->
+
+<p-dialog header="usuń odpowiedź" [(visible)]="deleteAnswerModalVisible" [style]="{width: '50vw'}" [modal]="true">
+  <div class="grid justify-content-center py-2">
+    <h3 class="w-12">Na pewno chcesz usunąć Odpowiedź? Ta akcja jest nieodwracalna.</h3>
+    <button type="button" pButton pRipple label="Usuń" icon="pi pi-trash" class="p-button-danger w-5 m-2" (click)="deleteAnswer()"></button>
+    <button type="button" pButton pRipple label="Wróć" icon="pi pi-arrow-left" class="p-button-success w-5 m-2"
+            (click)="deleteAnswerModalVisible=false"></button>
+  </div>
+</p-dialog>
+
+
+<!--edit answer modal-->
+
+<p-dialog *ngIf="editAnswerModalVisible" header="zmień odpowiedź" [(visible)]="editAnswerModalVisible" [style]="{width: '50vw'}" [modal]="true" [closable]="false">
+  <form (ngSubmit)="onSubmitEditAnswer()" class="grid justify-content-center py-2">
+    <input class="w-9" type="text" pInputText [(ngModel)]="fieldToUpdate.content" name="content"/>
+    <p-selectButton class="w-3" [options]="answerCorrectOptions" [(ngModel)]="fieldToUpdate.correct" optionLabel="label" optionValue="value" name="correct"></p-selectButton>
+    <button type="submit" pButton pRipple label="Zapisz zmiany" class="p-button-success w-5 m-2"></button>
+    <button type="button" pButton pRipple label="Wróć" class="p-button-danger w-5 m-2"
+            (click)="editAnswerModalVisible=false"></button>
+  </form>
+</p-dialog>
+
+
+<!--add answer modal-->
+
+<p-dialog *ngIf="addAnswerModalVisible" header="dodaj odpowiedź" [(visible)]="addAnswerModalVisible" [style]="{width: '50vw'}" [modal]="true" [closable]="false">
+  <form (ngSubmit)="onSubmitAddAnswer()" class="grid justify-content-center py-2">
+    <input class="w-9" type="text" pInputText [(ngModel)]="answerCreateDto.content" name="content"/>
+    <p-selectButton class="w-3" [options]="answerCorrectOptions" [(ngModel)]="answerCreateDto.correct" optionLabel="label" optionValue="value" name="correct"></p-selectButton>
+    <button type="submit" pButton pRipple label="Zapisz zmiany" class="p-button-success w-5 m-2"></button>
+    <button type="button" pButton pRipple label="Wróć" class="p-button-danger w-5 m-2"
+            (click)="addAnswerModalVisible=false"></button>
+  </form>
+</p-dialog>
+
+<!--error question modal-->
+
+<p-dialog header="Fail" [(visible)]="failModalVisible" [style]="{width: '50vw'}" [modal]="true">
+  Something went wrong, please try again.
+</p-dialog>

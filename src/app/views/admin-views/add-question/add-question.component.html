@@ -1,0 +1,60 @@
+<div class="surface-section md:w-9">
+  <div class="font-medium text-3xl text-900 my-3">Dodaj pytanie</div>
+  <form (ngSubmit)="onSubmit()">
+    <ul class="list-none p-0 m-0">
+
+        <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-3 font-medium text-xl">treść</div>
+          <div class="text-900 w-full md:w-9 md:flex-order-0 flex-order-1">
+            <input type="text" pInputText [(ngModel)]="questionCreate.content" name="content" class="w-12">
+          </div>
+        </li>
+
+      <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-3 font-medium text-xl">data egzaminu</div>
+        <div class="text-900 w-full md:w-9 md:flex-order-0 flex-order-1">
+          <p-calendar class="w-12" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [(ngModel)]=questionCreate.examDate
+                      [showIcon]="true" appendTo="body" name="examDate" ></p-calendar>
+        </div>
+      </li>
+
+      <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-3 font-medium text-xl">poziom trudności</div>
+          <div *ngFor="let dif of difficulties" class="flex align-items-center mr-2">
+            <p-radioButton  name="difficulty" value="{{dif}}" [(ngModel)]="questionCreate.difficulty" inputId="{{dif}}"></p-radioButton>
+            <label for="{{dif}}" class="ml-2 text-xl">{{dif.toLowerCase()}}</label>
+          </div>
+      </li>
+
+      <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-3 font-medium text-xl">kategorie</div>
+        <div class="text-xl w-full md:w-9 md:flex-order-0 flex-order-1">
+          <p-checkbox *ngFor="let cat of categories" class="m-1" name="categories" value="{{cat}}" label="{{categoryToDisplayString(cat)}}" [(ngModel)]="questionCreate.categories"></p-checkbox>
+        </div>
+      </li>
+
+      <li *ngFor="let answer of questionCreate.answers" class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-3 font-medium text-xl">odpowiedź</div>
+        <div class="text-900 w-full md:w-9 md:flex-order-0 flex-order-1">
+          <input class="w-full" type="text" pInputText [(ngModel)]="answer.content" name="content"/>
+          <p-selectButton class="w-4" [options]="answerCorrectOptions" [(ngModel)]="answer.correct" optionLabel="label" optionValue="value" name="correct"></p-selectButton>        </div>
+      </li>
+
+    </ul>
+    <button type="button" pButton pRipple label="dodaj kolejną odpowiedź" class="p-button-success m-2" icon="pi pi-plus" (click)="addNewAnswer()"></button>
+    <button type="submit" pButton pRipple label="zapisz pytanie w bazie danych" class="p-button-success m-2" icon="pi pi-upload"></button>
+  </form>
+</div>
+
+<p-dialog header="Sukces!" [(visible)]="successModalVisible" [style]="{width: '50vw'}" [modal]="true">
+  <div class="grid justify-content-center py-2">
+    <button type="button" pButton pRipple label="Dodaj kolejne pytanie" class="p-button-success w-5 m-2"
+            (click)="successModalVisible = false"></button>
+    <button type="button" pButton pRipple label="idź do szczegółów dodanego pytania" class="p-button-success w-5 m-2"
+            [routerLink]="addedQuestionPath"></button>
+  </div>
+</p-dialog>
+
+<p-dialog header="Error" [(visible)]="failModalVisible" [style]="{width: '50vw'}" [modal]="true">
+  Nie udało dodać się pytania. Sprawdź poprawność danych.
+</p-dialog>

@@ -1,0 +1,99 @@
+<!--question table-->
+
+<div class="surface-section md:w-12">
+  <div class="font-medium text-3xl text-900 my-3" >Pytania</div>
+  <button pButton pRipple label="Pobierz wszystkie" class="p-button-success m-2" icon="pi pi-download" (click)="fetchAllQuestions()"></button>
+  <button pButton pRipple label="Pobierz wg kryteriów" class="p-button-success m-2" icon="pi pi-download" (click)="this.criteriaModalVisible = true"></button>
+  <button pButton pRipple label="Znajdź wg id" class="p-button-success m-2" icon="pi pi-download" (click)="this.idSearchModalVisible = true"></button>
+  <button pButton pRipple label="dodaj pytanie" class="p-button-success m-2" icon="pi pi-plus" routerLink='/admin/add-question'></button>
+  <p-table *ngIf="questions" styleClass="p-datatable-sm" [value]="questions" [tableStyle]="{'min-width': '30rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id" style="width:5%">Id <p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="examDate" style="width:10%">Data egzaminu  <p-sortIcon field="examDate"></p-sortIcon></th>
+        <th pSortableColumn="difficulty" style="width:10%">Trudność <p-sortIcon field="difficulty"></p-sortIcon></th>
+        <th pSortableColumn="categories" style="width:10%">Kategorie <p-sortIcon field="categories"></p-sortIcon></th>
+        <th pSortableColumn="content" style="width:60%">Treść <p-sortIcon field="content"></p-sortIcon></th>
+        <th style="width: 10%">Akcje</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-question>
+      <tr>
+        <td>{{question.id}}</td>
+        <td>{{question.examDate}}</td>
+        <td>{{question.difficulty}}</td>
+        <td>{{question.categories}}</td>
+        <td>{{question.content}}</td>
+        <td><button pButton pRipple label="Szczegóły" icon="pi pi-search" class="p-button-text" routerLink="{{'/admin/questions/' + question.id}}"></button></td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+
+<!--criteria modal-->
+
+
+<p-dialog header="Kryteria wyszukiwania" [(visible)]="criteriaModalVisible" [style]="{width: '50vw'}" [modal]="true" [closable]="false">
+  <form (ngSubmit)="onSubmit()" class="grid justify-content-center py-2">
+    <ul class="list-none p-0 m-0 w-full">
+
+      <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-3 font-medium">data egzaminu od</div>
+        <div class="text-900 w-full md:w-9 md:flex-order-0 flex-order-1">
+          <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [(ngModel)]="criteria.examDateFrom"
+                      [showIcon]="true" name="examDateFrom" appendTo="body"></p-calendar>
+        </div>
+      </li>
+
+      <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-3 font-medium">data egzaminu do</div>
+        <div class="text-900 w-full md:w-9 md:flex-order-0 flex-order-1">
+          <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [(ngModel)]="criteria.examDateTo"
+                      [showIcon]="true" name="examDateTo" appendTo="body"></p-calendar>
+        </div>
+      </li>
+
+      <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-3 font-medium">kategorie</div>
+        <div class="text-900 w-full md:w-9 md:flex-order-0 flex-order-1">
+          <p-checkbox *ngFor="let cat of categories" class="m-1" name="categories" value="{{cat}}" label="{{cat.toLowerCase().replace('_',' ')}}" [(ngModel)]="criteria.categoryOf"></p-checkbox>
+        </div>
+      </li>
+
+      <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-3 font-medium">poziomy trudności</div>
+        <div class="text-900 w-full md:w-9 md:flex-order-0 flex-order-1">
+          <p-checkbox *ngFor="let dif of difficulties" class="m-1" name="difficulties" value="{{dif}}" label="{{dif.toLowerCase()}}" [(ngModel)]="criteria.difficultyOf"></p-checkbox>
+        </div>
+      </li>
+
+    </ul>
+
+    <button type="submit" pButton pRipple label="Wyszukaj" class="p-button-success w-5 m-2"></button>
+    <button type="button" pButton pRipple label="Anuluj" class="p-button-danger w-5 m-2"
+            (click)="onCancelSearchByCriteria()"></button>
+  </form>
+</p-dialog>
+
+
+<!--id search modal-->
+
+
+<p-dialog header="Kryteria wyszukiwania" [(visible)]="idSearchModalVisible" [style]="{width: '50vw'}" [modal]="true" [closable]="false">
+  <div class="grid justify-content-center py-2">
+    <ul class="list-none p-0 m-0 w-full">
+
+      <li class="flex align-items-center py-1 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-3 font-medium">id pytania</div>
+        <div class="text-900 w-full md:w-9 md:flex-order-0 flex-order-1">
+          <input type=number [(ngModel)]="selectedId" name="selectedId" class="w-12">
+        </div>
+      </li>
+    </ul>
+
+    <button pButton pRipple label="Wyszukaj" class="p-button-success w-5 m-2" [routerLink]="'/admin/questions/' + selectedId"></button>
+    <button type="button" pButton pRipple label="Anuluj" class="p-button-danger w-5 m-2"
+            (click)="idSearchModalVisible = false"></button>
+  </div>
+</p-dialog>

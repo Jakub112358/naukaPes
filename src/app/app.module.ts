@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
 import {AdminLayoutModule} from "./views/admin-layout/admin-layout.module";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -13,9 +14,12 @@ import {AdminLayoutModule} from "./views/admin-layout/admin-layout.module";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AdminLayoutModule
+    AdminLayoutModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
