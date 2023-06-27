@@ -1,4 +1,4 @@
-## Car Rental - Frontend
+## DermoPES - Frontend
 
 Backend part of the application: https://github.com/Jakub112358/DermoPES
 
